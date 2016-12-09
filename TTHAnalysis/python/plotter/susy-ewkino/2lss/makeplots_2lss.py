@@ -18,17 +18,18 @@ def replaceInFile(path, search, replace):
     f.write(lines)
     f.close()
 
-
 def base(selection):
     
-    CORE="-P /afs/cern.ch/user/f/folguera/workdir/trees/ewkino/8011_July12_skimmed/ -F sf/t {P}/2_recleaner_wpsViX4mrE2_ptJIMIX3/evVarFriend_{cname}.root"
-    CORE+=" -F sf/t {P}/3_leptonJetReCleanerSusyEWK3L/evVarFriend_{cname}.root -F sf/t {P}/4_evtbtag_12fb_2lss/evVarFriend_{cname}.root"
-    CORE+=" -f -j 8 -l 12.9 --s2v --tree treeProducerSusyMultilepton --mcc susy-ewkino/2lss/lepchoice-2lss-FO.txt --mcc susy-ewkino/mcc_triggerdefs.txt --neg"
-    if dowhat == "plots":  CORE+=" --cms --legendWidth 0.20 --legendFontSize 0.035 --showRatio --maxRatioRange 0 3 --showMCError --legendHeader '2lss' "
-    CORE+="-W 'puw2016_nInt_ICHEP(nTrueInt)*triggerSF_2lss_ewk(LepGood1_pt,LepGood2_pt,LepGood2_pdgId)*leptonSF_2lss_ewk(LepGood1_pdgId,LepGood1_pt,LepGood1_eta)*leptonSF_2lss_ewk(LepGood2_pdgId,LepGood2_pt,LepGood2_eta)*eventBTagSF' "
+    CORE="-P /afs/cern.ch/work/f/folguera/trees/ewkino/TREES_80X_011216_Spring16MVA_skim_2lep_OR_1lep_2tau_skimmed/  --Fs {P}/leptonJetReCleanerSusyEWK2L"
+    CORE+=" -f -j 4 -l 17.3 --s2v --tree treeProducerSusyMultilepton --mcc susy-ewkino/2lss/lepchoice-2lss-FO.txt --mcc susy-ewkino/mcc_triggerdefs.txt --neg "
+    if dowhat == "plots":  
+        CORE+="  --legendWidth 0.20 --legendFontSize 0.035 --showRatio --maxRatioRange 0 3  --showMCError --legendHeader '2lss' "
+        CORE+="--ratioOffset 0.03 --load-macro susy-ewkino/3l/functionsEWK.cc --wide --noStackSig --showIndivSigs --legendWidth 0.15 --legendFontSize 0.015 --showMCError "
+    CORE+="-W 'puw2016_nInt_Moriond(nTrueInt)*triggerSF_2lss_ewk(LepGood1_pt,LepGood2_pt,LepGood2_pdgId)*leptonSF_2lss_ewk(LepGood1_pdgId,LepGood1_pt,LepGood1_eta)*leptonSF_2lss_ewk(LepGood2_pdgId,LepGood2_pt,LepGood2_eta)' "
 
-    GO="%s susy-ewkino/2lss/mca-2lss-mc.txt susy-ewkino/2lss/cuts_2lss.txt  "%CORE
-    if dowhat == "plots": GO+=" susy-ewkino/2lss/plots_2lss.txt --xP 'nT_.*' "
+
+    GO="%s susy-ewkino/2lss/mca-2lss-mc.txt susy-ewkino/2lss/cuts_baseline.txt  "%CORE
+    if dowhat == "plots": GO+=" susy-ewkino/2lss/plots_crtnl.txt --xP 'nT_.*' "
     return GO
 
 def procs(GO,mylist):
@@ -66,7 +67,7 @@ def setwide(x):
     x2 = x2.replace('--legendWidth 0.35','--legendWidth 0.20')
     return x2
 
-allow_unblinding = True
+allow_unblinding = False
     
 
 if __name__ == '__main__':
@@ -75,8 +76,6 @@ if __name__ == '__main__':
     queue = ''
     if len(sys.argv)>3: queue = sys.argv[3]
     
-    if (not allow_unblinding) and 'data' in torun and (not any([re.match(x.strip()+'$',torun) for x in ['.*_appl.*','cr_.*']])): raise RuntimeError, 'You are trying to unblind!'
-
     if '2lss_' in torun:
         x = base('2lss')
         if '_appl' in torun: 
@@ -92,17 +91,18 @@ if __name__ == '__main__':
             x = x.replace('mca-2lss-mc.txt','mca-2lss-mcdata.txt')
         if '_frdata' in torun:
             if not '_data' in torun: raise RuntimeError
-            x = x.replace('mca-2lss-mcdata.txt','mca-2lss-mcdata-frdata.txt')
+            x = x.replace('mca-2lss-mcdata.txt','mca-full2016.txt')
             x = add(x,'--plotgroup fakes_data+=promptsub')
 
         if '_flav' in torun:
             for flav in ['mm','ee','em']: runIt(add(x,'-E ^%s'%flav),'%sa/%s'%(torun.rstrip('_flav'),flav),queue)
-
+        elif '_roi' in torun:
+            runIt(add(x,'-E ^roi'),'%s/%s'%(torun.rstrip('_roi'),'1jetmet150'),queue)
         elif '_jet' in torun:
             runIt(add(x,'-E ^0j'),'%s/%s'%(torun.rstrip('_jet'),'0jet'),queue)
             runIt(add(x,'-E ^1j'),'%s/%s'%(torun.rstrip('_jet'),'1jet'),queue)
         elif '_SR' in torun:
-            for sr in range(1,19): runIt(add(x,"-A alwaystrue SR 'SR_ewk_ss2l(nJet40,LepGood1_conePt,LepGood1_phi, LepGood2_conePt,LepGood2_phi, met_pt,met_phi)==%s'"%sr),'%s/%s'%(torun.rstrip('_SR'),"SR%s"%sr),queue)
+            for sr in range(1,31): runIt(add(x,"-A alwaystrue SR 'SR_ewk_ss2l(nJet40,LepGood1_conePt,LepGood1_phi, LepGood2_conePt,LepGood2_phi, met_pt,met_phi)==%s'"%sr),'%s/%s'%(torun.rstrip('_SR'),"SR%s"%sr),queue)
         else:
             runIt(x,'%s'%torun,queue)
 

@@ -1,8 +1,7 @@
 tot_weight: 1 : 1,0.5,1.5; XTitle = "Selected events", Legend='TR', MoreY=2.0
 
-
-SR : SR_ewk_ss2l(nJet40,LepGood1_conePt,LepGood1_phi, LepGood2_conePt,LepGood2_phi, met_pt,met_phi,LepGood1_charge):  30,0.5,30.5; XTitle="SR", LegendCutoff=1e-3, YMin=0.1, YMax=5e4
-SR_log : SR_ewk_ss2l(nJet40,LepGood1_conePt,LepGood1_phi, LepGood2_conePt,LepGood2_phi, met_pt,met_phi,LepGood1_charge):  30,0.5,30.5; XTitle="SR", LegendCutoff=1e-3, Logy, YMin=0.1, YMax=5e4
+SR : SR_ewk_ss2l(nJet40,LepGood1_conePt,LepGood1_phi, LepGood2_conePt,LepGood2_phi, met_pt,met_phi,LepGood1_charge):  30,0.5,30.5; XTitle="SR", LegendCutoff=1e-3 
+SR_log : SR_ewk_ss2l(nJet40,LepGood1_conePt,LepGood1_phi, LepGood2_conePt,LepGood2_phi, met_pt,met_phi,LepGood1_charge):  30,0.5,30.5; XTitle="SR", LegendCutoff=1e-3, Logy
 
 MET        : met_pt               : 35,0,700     ; XTitle="E_{T}^{miss} [GeV]", LegendCutoff=1e-3
 MET_log        : met_pt               : 35,0,700     ; XTitle="E_{T}^{miss} [GeV]", Logy, LegendCutoff=1e-3

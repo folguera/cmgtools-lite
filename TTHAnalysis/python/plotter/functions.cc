@@ -356,71 +356,37 @@ int SR_ewk_ss2l(int nj, float ptl1, float phil1, float ptl2, float phil2, float 
   float mtw  = std::min(mtw1,mtw2);
   float ptdil = pt_2(ptl1,phil1,ptl2,phil2);
   int   cha  = charge;
-  // V0 --- LPC version
-//V0-LPC  if      (nj==0 && mtw<40 && met>100 && met<200)             return 1;
-//V0-LPC  else if (nj==0 && mtw<40 && met>200)                        return 2;
-//V0-LPC  else if (nj==0 && mtw>40 && mtw<120 && met>100 && met<200)  return 3;
-//V0-LPC  else if (nj==0 && mtw>40 && mtw<120 && met>200)             return 4;
-//V0-LPC  else if (nj==0 && mtw>120 && met>100 && met<200)            return 5;
-//V0-LPC  else if (nj==0 && mtw>120 && met>200)                       return 6;
-//V0-LPC  else if (nj==1 && mtw<40 && met>100 && met<200)             return 7;
-//V0-LPC  else if (nj==1 && mtw<40 && met>200)                        return 8;
-//V0-LPC  else if (nj==1 && mtw>40 && mtw<120 && met>100 && met<200)  return 9;
-//V0-LPC  else if (nj==1 && mtw>40 && mtw<120 && met>200)             return 10;
-//V0-LPC  else if (nj==1 && mtw>120 && met>100 && met<200)            return 11;
-//V0-LPC  else if (nj==1 && mtw>120 && met>200)                       return 12;
-
-  if      (nj==0 && ptdil<75 && mtw<100 && met<100)            return 1;  //VR
-
-  else if (nj==0 && ptdil<75 && mtw<100 && met>100 && met<150 && cha == +1) return 2;
-  else if (nj==0 && ptdil<75 && mtw<100 && met>100 && met<150 && cha == -1) return 3;
-
-
-  else if (nj==0 && ptdil<75 && mtw<100 && met>150 && met < 200)            return 4;
-  else if (nj==0 && ptdil<75 && mtw<100 && met > 200)            			    return 5;
-
-  else if (nj==0 && ptdil>75 && mtw<100 && met<100)            return 6; //VR
-
-
-  else if (nj==0 && ptdil>75 && mtw<100 && met>100 && met<150 && cha == +1) return 7;
-  else if (nj==0 && ptdil>75 && mtw<100 && met>100 && met<150 && cha == -1) return 8;
-
-  else if (nj==0 && ptdil>75 && mtw<100 && met>150 && met < 200)            return 9;
-  else if (nj==0 && ptdil>75 && mtw<100 && met>200)				             return 10;
-
-  else if (nj==0 && mtw>100 && met<100)                        return 11;  //VR
-
-
-  else if (nj==0 && mtw>100 && met>100 && met<150 && cha == +1)             return 12;
-  else if (nj==0 && mtw>100 && met>100 && met<150 && cha == -1)             return 13;
-
-  else if (nj==0 && mtw>100 && met>150 && met<200)                          return 14;
-  else if (nj==0 && mtw>100 && met>200)                        			    return 15;
-
-  else if (nj==1 && ptdil<75 && mtw<100 && met<100 )            return 16;  //VR
-
-  else if (nj==1 && ptdil<75 && mtw<100 && met>100 && met<150 && cha == +1) return 17;
-  else if (nj==1 && ptdil<75 && mtw<100 && met>100 && met<150 && cha == -1) return 18;
-
-  else if (nj==1 && ptdil<75 && mtw<100 && met>150 && met<200)              return 19;
-  else if (nj==1 && ptdil<75 && mtw<100 && met>200)         		          return 20;
-
-  else if (nj==1 && ptdil>75 && mtw<100 && met<100)            return 21; //VR
-
-
-  else if (nj==1 && ptdil>75 && mtw<100 && met>100 && met<150 && cha == +1) return 22;
-  else if (nj==1 && ptdil>75 && mtw<100 && met>100 && met<150 && cha == -1) return 23;
-
-  else if (nj==1 && ptdil>75 && mtw<100 && met>150 && met < 200)            return 24;
-  else if (nj==1 && ptdil>75 && mtw<100 && met>200) 					          return 25;
-
-  else if (nj==1 && mtw>100 && met<100)                        return 26;  //VR
-
-  else if (nj==1 && mtw>100 && met>100 && met<150 && cha == +1)             return 27;
-  else if (nj==1 && mtw>100 && met>100 && met<150 && cha == -1)             return 28;
-
-  else if (nj==1 && mtw>100 && met>150 && met<200)                          return 29;
-  else if (nj==1 && mtw>100 && met>200)                   				       return 30;
+  
+  if      (nj==0 && ptdil<50 && mtw<100 && met<100)                         return 1;   // 0jet, ptdil<50 -- VR         
+  else if (nj==0 && ptdil<50 && mtw<100 && met>100 && met<150 && cha == +1) return 2; 	// 0jet, ptdil<50 MET>100, ++   
+  else if (nj==0 && ptdil<50 && mtw<100 && met>100 && met<150 && cha == -1) return 3;	// 0jet, ptdil<50 MET>100, --   
+  else if (nj==0 && ptdil<50 && mtw<100 && met>150 && met < 200)            return 4;	// 0jet, ptdil<50 MET>150       
+  else if (nj==0 && ptdil<50 && mtw<100 && met > 200)            	    return 5;	// 0jet, ptdil<50 MET>200       
+  else if (nj==0 && ptdil>50 && mtw<100 && met<100)                         return 6;   // 0jet, ptdil>50 -- VR         
+  else if (nj==0 && ptdil>50 && mtw<100 && met>100 && met<150 && cha == +1) return 7;	// 0jet, ptdil>50 MET>100, ++   
+  else if (nj==0 && ptdil>50 && mtw<100 && met>100 && met<150 && cha == -1) return 8;	// 0jet, ptdil>50 MET>100, --   
+  else if (nj==0 && ptdil>50 && mtw<100 && met>150 && met < 200)            return 9;	// 0jet, ptdil>50 MET>150       
+  else if (nj==0 && ptdil>50 && mtw<100 && met>200)			    return 10;	// 0jet, ptdil>50 MET>200       
+  else if (nj==0 && mtw>100 && met<100)                                     return 11;  // 0jet, MT>100                 
+  else if (nj==0 && mtw>100 && met>100 && met<150 && cha == +1)             return 12;	// 0jet, MT>100, MET>100, ++    
+  else if (nj==0 && mtw>100 && met>100 && met<150 && cha == -1)             return 13;	// 0jet, MT>100, MET>100, --    
+  else if (nj==0 && mtw>100 && met>150 && met<200)                          return 14;	// 0jet, MT>100, MET>150        
+  else if (nj==0 && mtw>100 && met>200)                        		    return 15;	// 0jet, MT>100, MET>200        
+  else if (nj==1 && ptdil<50 && mtw<100 && met<100 )                        return 16;  // 1jet, ptdil<50 -- VR
+  else if (nj==1 && ptdil<50 && mtw<100 && met>100 && met<150 && cha == +1) return 17;  // 1jet, ptdil<50 MET>100, ++
+  else if (nj==1 && ptdil<50 && mtw<100 && met>100 && met<150 && cha == -1) return 18;  // 1jet, ptdil<50 MET>100, --
+  else if (nj==1 && ptdil<50 && mtw<100 && met>150 && met<200)              return 19;  // 1jet, ptdil<50 MET>150
+  else if (nj==1 && ptdil<50 && mtw<100 && met>200)         		    return 20;  // 1jet, ptdil<50 MET>200
+  else if (nj==1 && ptdil>50 && mtw<100 && met<100)                         return 21;  // 1jet, ptdil>50 -- VR
+  else if (nj==1 && ptdil>50 && mtw<100 && met>100 && met<150 && cha == +1) return 22;  // 1jet, ptdil>50 MET>100, ++ 
+  else if (nj==1 && ptdil>50 && mtw<100 && met>100 && met<150 && cha == -1) return 23;	// 1jet, ptdil>50 MET>100, -- 
+  else if (nj==1 && ptdil>50 && mtw<100 && met>150 && met < 200)            return 24;	// 1jet, ptdil>50 MET>150     
+  else if (nj==1 && ptdil>50 && mtw<100 && met>200) 			    return 25;  // 1jet, ptdil>50 MET>200     
+  else if (nj==1 && mtw>100 && met<100)                                     return 26;  // 1jet, MT>100  
+  else if (nj==1 && mtw>100 && met>100 && met<150 && cha == +1)             return 27;  // 1jet, MT>100, MET>100, ++
+  else if (nj==1 && mtw>100 && met>100 && met<150 && cha == -1)             return 28;  // 1jet, MT>100, MET>100, --
+  else if (nj==1 && mtw>100 && met>150 && met<200)                          return 29;  // 1jet, MT>100, MET>150
+  else if (nj==1 && mtw>100 && met>200)                   		    return 30;  // 1jet, MT>100, MET>200        
 
   return -99;   
   

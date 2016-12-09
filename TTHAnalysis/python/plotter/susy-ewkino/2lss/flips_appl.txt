@@ -3,4 +3,4 @@ weight: chargeFlipWeight_2lss(LepGood1_pt,LepGood1_eta,LepGood1_pdgId,LepGood2_p
 ### 80X
 #load-histo: QF_el : /nfs/fanae/user/nachos/ForECO/chargeMId_80X_2016_ewkino.root : elChMId
 #With Data, Moriond
-load-histo: QF_el : /nfs/fanae/user/carlosec/SameSigntemp/CMSSW_8_0_19/src/CMGTools/TTHAnalysis/data/fliprate/chargeMId_80X_2016_mva.root : elChMId
+load-histo: QF_el : $CMSSW_BASE/src/CMGTools/TTHAnalysis/data/fliprate/chargeMId_80X_2016_AllMVA.root : elChMId

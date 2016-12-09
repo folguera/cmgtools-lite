@@ -1,5 +1,5 @@
 alwaystrue: 1
-blinding  : !isData || (run <= 276811 || (run>=278820 && run<=279931))
+blinding  : $DATA{(run <= 276811 || (run>=278820 && run<=279931))} $MC{1}
 filters: $DATA{ Flag_EcalDeadCellTriggerPrimitiveFilter && Flag_HBHENoiseIsoFilter && Flag_HBHENoiseFilter && Flag_eeBadScFilter && Flag_goodVertices && Flag_globalTightHalo2016Filter && Flag_badChargedHadronFilter && Flag_badMuonFilter } $MC{1}
 trigger: $DATA{(Triggers_ee || Triggers_mm || Triggers_em)} $MC{1}
 cleanup: minMllAFAS > 12
@@ -12,3 +12,34 @@ same-sign: (LepGood1_charge*LepGood2_charge > 0)
 met: met_pt > 60
 0bjetM: nBJetMedium25 == 0
 0and1jet: nJet40<=1
+
+
+ichep:  $DATA{(run <= 276811)} $MC{1}; Disable=True 
+denom_noMVA:  (LepGood_jetPtRatiov2 > 0.3 && LepGood_jetBTagCSV < 0.3 && (abs(LepGood_pdgId)!=11 || (abs(LepGood_eta)<1.479 && LepGood_mvaIdSpring15>0.0) || (abs(LepGood_eta)>1.479 && LepGood_mvaIdSpring15>0.3))); Disable=True
+tightMVAVL: (LepGood1_mvaSUSY>-0.90+(0.90-0.30)*(abs(LepGood1_pdgId)==11)) && (LepGood2_mvaSUSY>-0.90+(0.90-0.30)*(abs(LepGood2_pdgId)==11)); Disable=True
+tightMVAL : (LepGood1_mvaSUSY>-0.60+(0.60+0.25)*(abs(LepGood1_pdgId)==11)) && (LepGood2_mvaSUSY>-0.60+(0.60+0.25)*(abs(LepGood2_pdgId)==11)); Disable=True
+tightMVAM : (LepGood1_mvaSUSY>-0.20+(0.20+0.50)*(abs(LepGood1_pdgId)==11)) && (LepGood2_mvaSUSY>-0.20+(0.20+0.50)*(abs(LepGood2_pdgId)==11)); Disable=True
+tightMVAT : (LepGood1_mvaSUSY>0.15+(-0.15+0.65)*(abs(LepGood1_pdgId)==11)) && (LepGood2_mvaSUSY>0.15+(-0.15+0.65)*(abs(LepGood2_pdgId)==11)); Disable=True
+tightMVAVT: (LepGood1_mvaSUSY>0.45+(-0.45+0.75)*(abs(LepGood1_pdgId)==11)) && (LepGood2_mvaSUSY>0.45+(-0.45+0.75)*(abs(LepGood2_pdgId)==11)); Disable=True
+tightMVAET: (LepGood1_mvaSUSY>0.65+(-0.65-0.85)*(abs(LepGood1_pdgId)==11)) && (LepGood2_mvaSUSY>0.65+(-0.65+0.85)*(abs(LepGood2_pdgId)==11)); Disable=True
+MultiIso: (LepGood1_miniRelIso < 0.16 && (LepGood1_jetPtRelv2 > 7.2 || LepGood1_jetPtRatiov2 > 0.76)) && (LepGood2_miniRelIso < 0.16 && (LepGood2_jetPtRelv2 > 7.2 || LepGood2_jetPtRatiov2 > 0.76)); Disable=True
+1j: nJet40==1 ; Disable=True
+roi: nJet40==1 && met_pt > 150; Disable=True
+roimt: nJet40==1 && met_pt > 150 && min(mt_2(LepGood1_conePt,LepGood1_phi,met_pt,met_phi),mt_2(LepGood2_conePt,LepGood2_phi,met_pt,met_phi))<100; Disable=True
+roiextend: nJet40==1 && met_pt > 100 && min(mt_2(LepGood1_conePt,LepGood1_phi,met_pt,met_phi),mt_2(LepGood2_conePt,LepGood2_phi,met_pt,met_phi))<100; Disable=True
+0j: nJet40==0 ; Disable=True
+0tau: nTauSel==0 ; Disable=True
+1tau: nTauSel>=1 ; Disable=True
+ee: abs(LepGood1_pdgId)==11 && abs(LepGood2_pdgId)==11; Disable=True
+em: abs(LepGood1_pdgId) != abs(LepGood2_pdgId);         Disable=True
+mm: abs(LepGood1_pdgId)==13 && abs(LepGood2_pdgId)==13; Disable=True
+sr: SR_ewk_ss2l(nJet40,LepGood1_conePt,LepGood1_phi, LepGood2_conePt,LepGood2_phi, met_pt,met_phi,LepGood1_charge)>0; Disable=True
+met100:  met_pt > 100; Disable=True
+met150:  met_pt > 100 && met_pt < 150 ; Disable=True
+metge150: met_pt > 150 ; Disable=True
+mtminse100: min(mt_2(LepGood1_pt,LepGood1_phi,met_pt,met_phi),mt_2(LepGood2_pt,LepGood2_phi,met_pt,met_phi)) < 100 ; Disable=True
+mtmin100: min(mt_2(LepGood1_pt,LepGood1_phi,met_pt,met_phi),mt_2(LepGood2_pt,LepGood2_phi,met_pt,met_phi)) > 100 ; Disable=True
+ptdil0: pt_2(LepGood1_pt, LepGood1_phi, LepGood2_pt, LepGood2_phi) < 50 ; Disable=True
+ptdil50: pt_2(LepGood1_pt, LepGood1_phi, LepGood2_pt, LepGood2_phi) > 50 && pt_2(LepGood1_pt, LepGood1_phi, LepGood2_pt, LepGood2_phi) < 100 ; Disable=True
+ptdil100: pt_2(LepGood1_pt, LepGood1_phi, LepGood2_pt, LepGood2_phi) > 100 ; Disable=True
+
